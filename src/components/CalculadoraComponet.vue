@@ -56,9 +56,11 @@ export default {
     };
   },
   methods: {
+    // Limpa o campo de saída
     clearField() {
       this.output = '0';
     },
+    // Adiciona um número ao campo de saída
     addNumber(number) {
       if (this.output === '0') {
         this.output = number.toString();
@@ -66,6 +68,7 @@ export default {
         this.output += number.toString();
       }
     },
+    // Adiciona um operador ao campo de saída
     addOperate(operator) {
       if (this.output === '0') {
         this.output = operator.toString();
@@ -73,6 +76,7 @@ export default {
         this.output += operator.toString();
       }
     },
+    // Adiciona um ponto decimal ao campo de saída
     addPonto(value) {
       if (this.output === '0' && value !== '.') {
         this.output = value;
@@ -80,32 +84,76 @@ export default {
         this.output += value;
       }
     },
+    // Realiza o cálculo com base na expressão no campo de saída
     calculate() {
       let expression = this.output;
 
+      // Verifica se a expressão contém uma operação de soma
       if (expression.includes('+')) {
         const numbers = expression.split('+');
         const sum = numbers.reduce((acc, curr) => Number(acc) + Number(curr));
         this.output = sum.toString();
-      } else if (expression.includes('-')) {
+      }
+      // Verifica se a expressão contém uma operação de subtração
+      else if (expression.includes('-')) {
         const numbers = expression.split('-');
         const difference = numbers.reduce((acc, curr) => Number(acc) - Number(curr));
         this.output = difference.toString();
-      } else if (expression.includes('*')) {
+      }
+      // Verifica se a expressão contém uma operação de multiplicação
+      else if (expression.includes('*')) {
         const numbers = expression.split('*');
         const product = numbers.reduce((acc, curr) => Number(acc) * Number(curr));
         this.output = product.toString();
-      } else if (expression.includes('/')) {
+      }
+      // Verifica se a expressão contém uma operação de divisão
+      else if (expression.includes('/')) {
         const numbers = expression.split('/');
         const quotient = numbers.reduce((acc, curr) => Number(acc) / Number(curr));
         this.output = quotient.toString();
-      } else if (expression.includes('%')) {
-        this.output = (parseFloat(this.output) / 100).toString();
-      } else if (expression.includes('+/-')) {
-        this.output = (parseFloat(this.output) * -1).toString();
       }
+      // Verifica se a expressão contém um operador de porcentagem
+      else if (expression.includes('%')) {
+        this.output = (parseFloat(this.output) / 100).toString();
+      }
+      // Verifica se a expressão contém um operador de inversão de sinal
+      else if (expression.includes('+/-')) {
+      const numericValue = parseFloat(this.output);
+      const invertedValue = -numericValue;
+      this.output = invertedValue.toString();
+      }
+
+      // Trata as operações de multiplicação e divisão primeiro
+      if (expression.includes('*') || expression.includes('/')) {
+        const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
+        expression = expression.replace(multiplyDivideRegex, (match, num1, operator, num2) => {
+          const n1 = Number(num1);
+          const n2 = Number(num2);
+          if (operator === '*') {
+            return (n1 * n2).toString();
+          } else if (operator === '/') {
+            return (n1 / n2).toString();
+          }
+        });
+      }
+
+      // Trata as operações de soma e subtração
+      if (expression.includes('+') || expression.includes('-')) {
+          const addSubtractRegex = /(\d+\.?\d*)\s*([+\\-])\s*(\d+\.?\d*)/g;
+          expression = expression.replace(addSubtractRegex, (match, num1, operator, num2) => {
+          const n1 = Number(num1);
+          const n2 = Number(num2);
+          if (operator === '+') {
+          return (n1 + n2).toString();
+        } else if (operator === '-') {
+          return (n1 - n2).toString();
+          }
+        });
+      }
+      this.output = expression;
       this.accounts.push(expression);
     },
+    // Deleta o último caractere do campo de saída
     deleteUltimoCaractere() {
       this.output = this.output.substr(0, this.output.length - 1);
     }
