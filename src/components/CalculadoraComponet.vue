@@ -27,7 +27,7 @@
         <tr class="sobrecor">
           <td v-on:click="addPonto('.')">.</td>
           <td v-on:click="addNumber(0)">0</td>
-          <td v-on:click="addOperate('%')">%</td>
+          <td v-on:click="porcent()">%</td>
           <td v-on:click="addOperate('+')">+</td>
         </tr>
         <tr class="sobrecor">
@@ -90,6 +90,11 @@ export default {
       const invertedValue = -numericValue;
       this.output = invertedValue.toString();
     },
+    porcent(){
+      // Verifica se a expressão contém um operador de porcentagem
+      this.output = (parseFloat(this.output) / 100).toString();
+      
+    },
     // Realiza o cálculo com base na expressão no campo de saída
     calculate() {
       let expression = this.output;
@@ -117,10 +122,6 @@ export default {
         const numbers = expression.split('/');
         const quotient = numbers.reduce((acc, curr) => Number(acc) / Number(curr));
         this.output = quotient.toString();
-      }
-      // Verifica se a expressão contém um operador de porcentagem
-      else if (expression.includes('%')) {
-        this.output = (parseFloat(this.output) / 100).toString();
       }
       // Trata as operações de multiplicação e divisão primeiro
       if (expression.includes('*') || expression.includes('/')) {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <CalculadoraComponet msg="Calculadora"/>
+    <CalculadoraComponet msg="Vue-Calculadora"/>
   </div>
 </template>
 
