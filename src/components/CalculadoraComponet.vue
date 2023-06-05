@@ -32,7 +32,7 @@
         </tr>
         <tr class="sobrecor">
           <td v-on:click="clearField" class="clear">C</td>
-          <td v-on:click="addOperate('+/-')">+/-</td>
+          <td v-on:click="inverse()">+/-</td>
           <td colspan="1" class="del" v-on:click="deleteUltimoCaractere()">X</td>
           <td class="enter" v-on:click="calculate()">=</td>
         </tr>
@@ -84,6 +84,12 @@ export default {
         this.output += value;
       }
     },
+    inverse(){
+      // Verifica se a expressão contém um operador de inversão de sinal      
+      const numericValue = parseFloat(this.output);
+      const invertedValue = -numericValue;
+      this.output = invertedValue.toString();
+    },
     // Realiza o cálculo com base na expressão no campo de saída
     calculate() {
       let expression = this.output;
@@ -116,13 +122,6 @@ export default {
       else if (expression.includes('%')) {
         this.output = (parseFloat(this.output) / 100).toString();
       }
-      // Verifica se a expressão contém um operador de inversão de sinal
-      else if (expression.includes('+/-')) {
-      const numericValue = parseFloat(this.output);
-      const invertedValue = -numericValue;
-      this.output = invertedValue.toString();
-      }
-
       // Trata as operações de multiplicação e divisão primeiro
       if (expression.includes('*') || expression.includes('/')) {
         const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
