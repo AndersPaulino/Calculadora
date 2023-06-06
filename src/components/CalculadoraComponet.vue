@@ -123,33 +123,33 @@ export default {
         const quotient = numbers.reduce((acc, curr) => Number(acc) / Number(curr));
         this.output = quotient.toString();
       }
-      // Trata as operações de multiplicação e divisão primeiro
-      if (expression.includes('*') || expression.includes('/')) {
-        const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
-        expression = expression.replace(multiplyDivideRegex, (match, num1, operator, num2) => {
-          const n1 = Number(num1);
-          const n2 = Number(num2);
-          if (operator === '*') {
-            return (n1 * n2).toString();
-          } else if (operator === '/') {
-            return (n1 / n2).toString();
-          }
-        });
-      }
+      // Trata as operações de multiplicação e divisão
+    if (expression.includes('*') || expression.includes('/')) {
+      const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
+      expression = expression.replace(multiplyDivideRegex, (match, num1, operator, num2) => {
+        const n1 = Number(num1);
+        const n2 = Number(num2);
+        if (operator === '*') {
+          return (n1 * n2).toString();
+        } else if (operator === '/') {
+          return (n1 / n2).toString();
+        }
+      });
+    }
 
-      // Trata as operações de soma e subtração
-      if (expression.includes('+') || expression.includes('-')) {
-          const addSubtractRegex = /(\d+\.?\d*)\s*([+\\-])\s*(\d+\.?\d*)/g;
-          expression = expression.replace(addSubtractRegex, (match, num1, operator, num2) => {
-          const n1 = Number(num1);
-          const n2 = Number(num2);
-          if (operator === '+') {
+    // Trata as operações de soma e subtração
+    if (expression.includes('+') || expression.includes('-')) {
+      const addSubtractRegex = /(\d+\.?\d*)\s*([+\\-])\s*(\d+\.?\d*)/g;
+      expression = expression.replace(addSubtractRegex, (match, num1, operator, num2) => {
+        const n1 = Number(num1);
+        const n2 = Number(num2);
+        if (operator === '+') {
           return (n1 + n2).toString();
         } else if (operator === '-') {
           return (n1 - n2).toString();
-          }
-        });
-      }
+        }
+      });
+    }
       this.output = expression;
       this.accounts.push(expression);
     },
