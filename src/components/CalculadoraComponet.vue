@@ -125,31 +125,61 @@ export default {
       }
       // Trata as operações de multiplicação e divisão
     if (expression.includes('*') || expression.includes('/')) {
-      const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
-      expression = expression.replace(multiplyDivideRegex, (match, num1, operator, num2) => {
+      const multiplyRegex = /(\d+\.?\d*)\s*\*\s*(\d+\.?\d*)/g;
+      expression = expression.replace(multiplyRegex, (match, num1, num2) => {
         const n1 = Number(num1);
         const n2 = Number(num2);
-        if (operator === '*') {
-          return (n1 * n2).toString();
-        } else if (operator === '/') {
-          return (n1 / n2).toString();
-        }
+        return (n1 * n2).toString();
+    });
+
+    const divideRegex = /(\d+\.?\d*)\s*\/\s*(\d+\.?\d*)/g;
+    expression = expression.replace(divideRegex, (match, num1, num2) => {
+        const n1 = Number(num1);
+        const n2 = Number(num2);
+        return (n1 / n2).toString();
       });
     }
 
-    // Trata as operações de soma e subtração
     if (expression.includes('+') || expression.includes('-')) {
-      const addSubtractRegex = /(\d+\.?\d*)\s*([+\\-])\s*(\d+\.?\d*)/g;
-      expression = expression.replace(addSubtractRegex, (match, num1, operator, num2) => {
-        const n1 = Number(num1);
-        const n2 = Number(num2);
-        if (operator === '+') {
-          return (n1 + n2).toString();
-        } else if (operator === '-') {
-          return (n1 - n2).toString();
-        }
-      });
+    const addRegex = /(\d+\.?\d*)\s*\+\s*(\d+\.?\d*)/g;
+    expression = expression.replace(addRegex, (match, num1, num2) => {
+      const n1 = Number(num1);
+      const n2 = Number(num2);
+      return (n1 + n2).toString();
+    });
+
+    const subtractRegex = /(\d+\.?\d*)\s*\\-\s*(\d+\.?\d*)/g;
+    expression = expression.replace(subtractRegex, (match, num1, num2) => {
+      const n1 = Number(num1);
+      const n2 = Number(num2);
+      return (n1 - n2).toString();
+    });
     }
+
+    
+    if (expression.includes('*') || expression.includes('/') || expression.includes('+') || expression.includes('-')) {
+    const multiplyDivideRegex = /(\d+\.?\d*)\s*([*/])\s*(\d+\.?\d*)/g;
+    expression = expression.replace(multiplyDivideRegex, (match, num1, operator, num2) => {
+      const n1 = Number(num1);
+      const n2 = Number(num2);
+      if (operator === '*') {
+        return (n1 * n2).toString();
+      } else if (operator === '/') {
+        return (n1 / n2).toString();
+      }
+    });
+
+    const addSubtractRegex = /(\d+\.?\d*)\s*([+\\-])\s*(\d+\.?\d*)/g;
+    expression = expression.replace(addSubtractRegex, (match, num1, operator, num2) => {
+      const n1 = Number(num1);
+      const n2 = Number(num2);
+      if (operator === '+') {
+        return (n1 + n2).toString();
+      } else if (operator === '-') {
+        return (n1 - n2).toString();
+      }
+    });
+  }
       this.output = expression;
       this.accounts.push(expression);
     },
