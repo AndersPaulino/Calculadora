@@ -193,6 +193,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+table{
+  height: 90%;
+  width: 30%;
+  margin-top: 5%;
+  margin-left: 35%;
+}
 td {
   user-select: none;
 }
@@ -233,5 +239,13 @@ li {
 }
 a {
   color: #42b983;
+}
+@media (max-width: 767px) {  /* Altere o valor conforme necessário para se adequar à largura do celular */
+  table {
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 0;
+  }
 }
 </style>
